@@ -26,7 +26,7 @@ Pattern e impostazioni restano dopo l'aggiornamento.
 1. Aumenta `version` in `package.json` (es. `1.0.0` → `1.0.1`).
 2. Fai push: il workflow `.github/workflows/mattone-desktop.yml` compila Windows, Mac e Linux e crea la Release `mattone-v1.0.1`.
 
-Un push senza cambio di versione compila soltanto (gli installer restano tra gli artifact della run).
+Ogni build carica i suoi file in una Release in bozza, pubblicata quando sono arrivati tutti e tre. Un push senza cambio di versione compila soltanto, senza pubblicare niente.
 
 ## Compilare in locale
 
