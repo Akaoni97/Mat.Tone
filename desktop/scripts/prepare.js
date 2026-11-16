@@ -1,4 +1,4 @@
-// Builds desktop/app/ from the web version: wraps groovebox/mattone.html in a full document,
+// Builds desktop/app/ from the web version: wraps ../mattone.html in a full document,
 // copies the samples and the MP3 encoder, and stores the fonts locally so the app works offline.
 const fs = require("fs");
 const path = require("path");

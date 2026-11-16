@@ -4,7 +4,7 @@ App desktop (Electron) con la stessa groovebox di `../mattone.html`, funziona of
 
 ## Scaricare
 
-Dalla pagina [Releases](https://github.com/Akaoni97/RandomEgg-s/releases), le versioni `mattone-v…`:
+Dalla pagina [Releases](https://github.com/Akaoni97/Mat.Tone/releases), le versioni `mattone-v…`:
 
 - Windows: `Mat.Tone-Setup-<versione>.exe` (installer) oppure `Mat.Tone-Portatile-<versione>.exe`
 - Mac: `Mat.Tone-<versione>-<arch>.dmg`
@@ -12,7 +12,7 @@ Dalla pagina [Releases](https://github.com/Akaoni97/RandomEgg-s/releases), le ve
 
 ## Aggiornamenti
 
-All'avvio l'app cerca la Release `mattone-v…` più recente (le Release degli altri progetti del repository vengono ignorate).
+All'avvio l'app cerca la Release `mattone-v…` più recente. Fino alla 1.0.59 Mat.Tone stava nel repository RandomEgg-s: l'app guarda in tutti e due e prende la versione più nuova, così le installazioni di prima trovano la nuova casa.
 
 - Installer Windows e AppImage Linux: scaricano l'aggiornamento da soli e chiedono se riavviare subito; altrimenti si installa alla chiusura.
 - Mac e Windows portatile: mostrano un avviso con il pulsante "Scarica" che apre la pagina della Release.

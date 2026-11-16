@@ -6,7 +6,7 @@ Mat.Tone ha l'aspetto di un campionatore vintage da cantina, con lo schermino, l
 
 ## Scaricare
 
-Dalla pagina [Releases](https://github.com/Akaoni97/RandomEgg-s/releases) prendi l'ultima versione `mattone-v…`:
+Dalla pagina [Releases](https://github.com/Akaoni97/Mat.Tone/releases) prendi l'ultima versione `mattone-v…`:
 
 | Sistema | File |
 |---|---|
@@ -61,13 +61,14 @@ L'app per PC funziona offline: suoni, font e codificatore MP3 sono inclusi. All'
 ## Com'è fatto
 
 ```
-groovebox/
-  mattone.html      tutta l'app in un solo file (HTML, CSS, JavaScript, Web Audio)
-  suoni/            i suoni: pacchetti e campioni grandi
-  desktop/          l'app per PC (Electron): vedi desktop/README.md
+mattone.html      tutta l'app in un solo file (HTML, CSS, JavaScript, Web Audio)
+suoni/            i suoni: pacchetti e campioni grandi
+desktop/          l'app per PC (Electron): vedi desktop/README.md
 ```
 
 Non ci sono framework né passaggi di compilazione per la parte web: `mattone.html` si apre direttamente nel browser. Il motore audio usa Web Audio e AudioWorklet (limiter con look-ahead, autotune, piatto). Le versioni per PC vengono compilate e pubblicate dal workflow `.github/workflows/mattone-desktop.yml` quando cambia la versione in `desktop/package.json`.
+
+Fino alla versione 1.0.59 Mat.Tone viveva nel repository [RandomEgg-s](https://github.com/Akaoni97/RandomEgg-s), da cui è stato spostato con tutta la sua cronologia.
 
 ## Crediti
 

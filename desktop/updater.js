@@ -1,5 +1,6 @@
-// Updates. The repo also hosts other projects' releases, so the repo-wide "latest release" is not ours:
-// look up the newest "mattone-v*" release by tag and use that release's own files as the update feed.
+// Updates. Mat.Tone moved from Akaoni97/RandomEgg-s (where it shared the releases with other projects) to its
+// own repository Akaoni97/Mat.Tone: both are asked, and the newest "mattone-v*" release of either is used, with its
+// own files as the update feed. Installs from before the move find the new home through the last release made there.
 // Windows installer and Linux AppImage update themselves; the unsigned Mac build and the portable
 // Windows build cannot, so they get a notice that opens the download page.
 // Every step is shown in the groovebox (status pill on the top bar) and written to aggiornamenti.log.
@@ -9,7 +10,8 @@ const fs = require("fs");
 const path = require("path");
 
 const PREFIX = "mattone-v";
-const API = process.env.MATTONE_UPDATE_API || "https://api.github.com/repos/Akaoni97/RandomEgg-s/releases?per_page=50";   // tests use a local server
+const APIS = process.env.MATTONE_UPDATE_API ? [process.env.MATTONE_UPDATE_API]   // tests use a local server
+  : ["https://api.github.com/repos/Akaoni97/Mat.Tone/releases?per_page=50", "https://api.github.com/repos/Akaoni97/RandomEgg-s/releases?per_page=50"];
 const CHANNEL = process.platform === "win32" ? "latest.yml" : process.platform === "linux" ? "latest-linux.yml" : null;
 const SELF_UPDATE = (process.platform === "win32" && !process.env.PORTABLE_EXECUTABLE_DIR) || (process.platform === "linux" && !!process.env.APPIMAGE);
 
@@ -32,16 +34,22 @@ function newer(a, b) {
 }
 
 async function latestRelease() {
-  const res = await net.fetch(API, { headers: { Accept: "application/vnd.github+json", "User-Agent": "Mat.Tone" } });
-  if (!res.ok) throw new Error("GitHub ha risposto " + res.status);
-  let best = null;
-  for (const r of await res.json()) {
-    if (r.draft || r.prerelease || !r.tag_name.startsWith(PREFIX)) continue;
-    const version = r.tag_name.slice(PREFIX.length);
-    if (!/^\d+\.\d+\.\d+$/.test(version) || (best && !newer(version, best.version))) continue;
-    const feed = (r.assets || []).find(a => a.name === CHANNEL);
-    best = { version, page: r.html_url, feed: feed ? feed.browser_download_url.slice(0, -CHANNEL.length) : null };
+  let best = null, err = null, asked = 0;
+  for (const api of APIS) {
+    try {
+      const res = await net.fetch(api, { headers: { Accept: "application/vnd.github+json", "User-Agent": "Mat.Tone" } });
+      if (!res.ok) throw new Error("GitHub ha risposto " + res.status);
+      asked++;
+      for (const r of await res.json()) {
+        if (r.draft || r.prerelease || !r.tag_name.startsWith(PREFIX)) continue;
+        const version = r.tag_name.slice(PREFIX.length);
+        if (!/^\d+\.\d+\.\d+$/.test(version) || (best && !newer(version, best.version))) continue;
+        const feed = (r.assets || []).find(a => a.name === CHANNEL);
+        best = { version, page: r.html_url, feed: feed ? feed.browser_download_url.slice(0, -CHANNEL.length) : null };
+      }
+    } catch (e) { err = e; log("non raggiungo", api, e.message); }   // one of the two may be private or away: the other is enough
   }
+  if (!asked && err) throw err;
   return best;
 }
 
